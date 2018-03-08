@@ -8,9 +8,9 @@ nameOfFile = input('What do you want to name the output file?\n')
 outputFile = open(nameOfFile + '.csv', 'w', newline='')
 outputWriter = csv.writer(outputFile)
 
-maxSpeed = float(input('How fast is the robot at its fastest? (cm/s)')) #In cm/second
-maxAccel = float(input('How fast does the robot accelerate? (cm/s/s)')) #In cm/second/second 
-target = float(input('How far do you want to move?')) #In cm
+maxSpeed = float(input('How fast is the robot at its fastest? (cm/s)\n')) #In cm/second
+maxAccel = float(input('How fast does the robot accelerate? (cm/s/s)\n')) #In cm/second/second 
+target = float(input('How far do you want to move?\n')) #In cm
 
 
 secondsElapsed = 0
