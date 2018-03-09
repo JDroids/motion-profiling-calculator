@@ -5,7 +5,7 @@ import numpy as np
 
 nameOfFile = input('What do you want to name the output file?\n')
 
-outputFile = open(nameOfFile + '.csv', 'w', newline='')
+outputFile = open('.\Outputs\\' + nameOfFile + '.csv', 'w', newline='')
 outputWriter = csv.writer(outputFile)
 
 #maxSpeed = float(input('How fast is the robot at its fastest? (cm/s)\n')) #In cm/second
@@ -84,4 +84,5 @@ plt.plot(timeList, accelList)
 plt.xlabel('Time (milliseconds)')
 plt.legend(['Position (cm)', 'Speed (cm/s)', 'Acceleration (cm/s/s)'], loc='upper left')
 
+plt.savefig('.\Graphs\\' + str(target) + 'CM.png')
 plt.show()
