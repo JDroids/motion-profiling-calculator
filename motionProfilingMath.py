@@ -3,19 +3,19 @@ from enum import Enum
 import csv
 import numpy as np
 
-nameOfFile = input('What do you want to name the output file?\n')
-
-outputFile = open('.\Outputs\\' + nameOfFile + '.csv', 'w', newline='')
-outputWriter = csv.writer(outputFile)
-
 #maxSpeed = float(input('How fast is the robot at its fastest? (cm/s)\n')) #In cm/second
 #maxAccel = float(input('How fast does the robot accelerate? (cm/s/s)\n')) #In cm/second/second 
+
+#maxSpeed = 487 #Cm/s  
+#maxAccel = 243.5 #Cm/s squared
 
 maxSpeed = 105
 maxAccel = 15
 
 target = float(input('How far do you want to move?\n')) #In cm
 
+outputFile = open('.\Outputs\\' + str(target) + '.csv', 'w', newline='')
+outputWriter = csv.writer(outputFile)
 
 secondsElapsed = 0
 currentPosition = 0
@@ -39,7 +39,6 @@ timePerIteration = 10 # In ms
 millisecondsElapsed = 0
 
 while currentPosition <= target:
-    #Update State
     distanceToDecelerate = (currentSpeed ** 2) / (2 * maxAccel) 
     distanceToTarget = target - currentPosition
     
@@ -59,7 +58,10 @@ while currentPosition <= target:
     if currentState == States.COASTING: currentAccel = 0
     if currentState == States.DECELERATING: currentAccel = -maxAccel
 
+    #Update Speed
     currentSpeed += currentAccel * timePerIteration/1000
+    
+    print(currentSpeed)
 
     #Add values to array
     timeList += [millisecondsElapsed]
