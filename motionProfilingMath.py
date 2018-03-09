@@ -8,8 +8,12 @@ nameOfFile = input('What do you want to name the output file?\n')
 outputFile = open(nameOfFile + '.csv', 'w', newline='')
 outputWriter = csv.writer(outputFile)
 
-maxSpeed = float(input('How fast is the robot at its fastest? (cm/s)\n')) #In cm/second
-maxAccel = float(input('How fast does the robot accelerate? (cm/s/s)\n')) #In cm/second/second 
+#maxSpeed = float(input('How fast is the robot at its fastest? (cm/s)\n')) #In cm/second
+#maxAccel = float(input('How fast does the robot accelerate? (cm/s/s)\n')) #In cm/second/second 
+
+maxSpeed = 105
+maxAccel = 15
+
 target = float(input('How far do you want to move?\n')) #In cm
 
 
@@ -30,8 +34,9 @@ class States(Enum):
 
 currentState = States.ACCLERATING
 
-timePerIteration = 0.0001 # In seconds
+timePerIteration = 10 # In ms
 
+millisecondsElapsed = 0
 
 while currentPosition <= target:
     #Update State
@@ -39,8 +44,8 @@ while currentPosition <= target:
     distanceToTarget = target - currentPosition
     
     #Update values
-    secondsElapsed += timePerIteration
-    currentPosition += currentSpeed * timePerIteration
+    millisecondsElapsed += timePerIteration
+    currentPosition += currentSpeed * (timePerIteration/1000)
     
     if distanceToTarget <= distanceToDecelerate:
         currentState = States.DECELERATING
@@ -54,16 +59,16 @@ while currentPosition <= target:
     if currentState == States.COASTING: currentAccel = 0
     if currentState == States.DECELERATING: currentAccel = -maxAccel
 
-    currentSpeed += currentAccel * timePerIteration
+    currentSpeed += currentAccel * timePerIteration/1000
 
     #Add values to array
-    timeList += [secondsElapsed]
+    timeList += [millisecondsElapsed]
     positionList += [currentPosition]
     speedList += [currentSpeed]
     accelList += [currentAccel]
 
     #Write time, speed, and position to file
-    outputWriter.writerow([secondsElapsed, currentSpeed, currentPosition])
+    outputWriter.writerow([millisecondsElapsed, currentSpeed, currentPosition])
 
 outputFile.close()
 
@@ -76,7 +81,7 @@ plt.plot(timeList, positionList)
 plt.plot(timeList, speedList)
 plt.plot(timeList, accelList)
 
-plt.xlabel('Time (seconds)')
+plt.xlabel('Time (milliseconds)')
 plt.legend(['Position (cm)', 'Speed (cm/s)', 'Acceleration (cm/s/s)'], loc='upper left')
 
 plt.show()
