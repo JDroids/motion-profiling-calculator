@@ -38,12 +38,15 @@ timePerIteration = 10 # In ms
 
 millisecondsElapsed = 0
 
-while currentPosition <= target:
+firstTime = True
+
+while not (currentSpeed > -0.0001 and currentSpeed < 0.0001) or firstTime:
+    firstTime = False
+
     distanceToDecelerate = (currentSpeed ** 2) / (2 * maxAccel) 
     distanceToTarget = target - currentPosition
     
     #Update values
-    millisecondsElapsed += timePerIteration
     currentPosition += currentSpeed * (timePerIteration/1000)
     
     if distanceToTarget <= distanceToDecelerate:
@@ -60,8 +63,6 @@ while currentPosition <= target:
 
     #Update Speed
     currentSpeed += currentAccel * timePerIteration/1000
-    
-    print(currentSpeed)
 
     #Add values to array
     timeList += [millisecondsElapsed]
@@ -71,6 +72,9 @@ while currentPosition <= target:
 
     #Write time, speed, and position to file
     outputWriter.writerow([millisecondsElapsed, currentSpeed, currentPosition])
+
+    millisecondsElapsed += timePerIteration
+
 
 outputFile.close()
 
